@@ -29,12 +29,15 @@ public class UserController {
 
 
 
-        Map<String,Object> claim = new HashMap<>();
-        claim.put("username",user.getUsername());
+        Map<String,Object> claims = new HashMap<>();
+        /////////////////////////////////////////
+        claims.put("id",user.getId());
+        claims.put("username",user.getUsername());
+        /////////////////////////////////////////
         UserVO userVO = UserVO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .token(JwtUtil.createJWT(jwtProperties.getSecretKey(), jwtProperties.getTtl(), claim))
+                .token(JwtUtil.createJWT(jwtProperties.getSecretKey(), jwtProperties.getTtl(), claims))
                 .build();
 
         return Result.success(userVO);

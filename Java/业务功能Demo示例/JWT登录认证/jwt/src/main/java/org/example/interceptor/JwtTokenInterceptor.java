@@ -1,6 +1,7 @@
 package org.example.interceptor;
 
 import io.jsonwebtoken.Claims;
+import org.example.context.BaseContext;
 import org.example.properties.JwtProperties;
 import org.example.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,11 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         //2、校验令牌
         try {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
-            System.out.println(claims);
+            // String -> Long
+            Long id = Long.valueOf(claims.get("id").toString());
+            BaseContext.setCurrentUserId(id);
+            // 可以输出看看是否拿到了当前用户id
+            System.out.println("当前用户id="+BaseContext.getCurrentUserId());
             //3、通过，放行
             return true;
         } catch (Exception ex) {
